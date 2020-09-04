@@ -60,7 +60,7 @@ class NoteCard extends Component {
 						appear
 						classNames={{
 							appearActive: classes.modalEnterActive,
-							appearDone: classes.modalEnterDone,
+							enterDone: classes.modalEnterDone,
 							exit: classes.modalExit,
 						}}
 						onExited={() => {this.setState({hide: false})}}
