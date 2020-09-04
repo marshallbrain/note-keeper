@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import {withStyles} from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
-import "fontsource-roboto"
-import Modal from "@material-ui/core/Modal";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import Paper from "@material-ui/core/Paper";
+import styled from 'styled-components';
 import CSSTransition from "react-transition-group/CSSTransition";
+import {withStyles} from "@material-ui/core";
+import {Card, CardContent, CardActionArea} from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+import Modal from "@material-ui/core/Modal";
+import Paper from "@material-ui/core/Paper";
 
 class NoteCard extends Component {
 	
@@ -91,9 +89,6 @@ const CardArea = styled(CardActionArea)`
 `;
 
 const styles = (theme) => ({
-	root: {
-		fontFamily: "Roboto",
-	},
 	modal: {
 		position: "absolute",
 		outline: 0,
@@ -117,7 +112,6 @@ const styles = (theme) => ({
 		transition: "all 0s ease",
 	},
 	modalExit: {
-	
 	},
 	modalContent: {
 		padding: theme.spacing(2),
