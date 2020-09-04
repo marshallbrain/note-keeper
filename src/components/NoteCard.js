@@ -26,9 +26,15 @@ class NoteCard extends Component {
 		let element = null
 		
 		const openFull = () => {
-			const {top, right, bottom, left, width, height} = element.getBoundingClientRect();
-			const bounds = {top, right, bottom, left, width, height}
+			const {top, left, width, height} = element.getBoundingClientRect();
+			const bounds = {top, left, width, height}
 			this.setState({open: true, hide: true, bounds: bounds});
+		}
+		
+		const closeFull = () => {
+			const {top, left, width, height} = element.getBoundingClientRect();
+			const bounds = {top, left, width, height}
+			this.setState({open: false, bounds: bounds});
 		}
 		
 		return (
@@ -47,7 +53,7 @@ class NoteCard extends Component {
 				</Card>
 				<Modal
 					open={open}
-					onClose={() => {this.setState({open: false})}}
+					onClose={closeFull}
 					closeAfterTransition
 				>
 					<CSSTransition
@@ -95,8 +101,6 @@ const styles = (theme) => ({
 	},
 	modalEnterActive: {
 		top: "0 !important",
-		right: "0 !important",
-		bottom: "0 !important",
 		left: "0 !important",
 		width: "80vw !important",
 		height: "80vh !important",
@@ -105,8 +109,6 @@ const styles = (theme) => ({
 	},
 	modalEnterDone: {
 		top: "0 !important",
-		right: "0 !important",
-		bottom: "0 !important",
 		left: "0 !important",
 		width: "80vw !important",
 		height: "80vh !important",
