@@ -34,8 +34,8 @@ class NoteCard extends Component {
 		return (
 			<div>
 				<Card ref={el => {element = el}} style={hide ? {opacity: 0}: {}}>
-					<CardActionArea onClick={openFull}>
-						<CardContent className={classes.root}>
+					<CardArea onClick={openFull} disableRipple>
+						<CardContent>
 							<Typography variant="h5" gutterBottom>
 								{this.props.title}
 							</Typography>
@@ -43,7 +43,7 @@ class NoteCard extends Component {
 								{this.props.children}
 							</Typography>
 						</CardContent>
-					</CardActionArea>
+					</CardArea>
 				</Card>
 				<Modal
 					open={open}
@@ -77,6 +77,12 @@ class NoteCard extends Component {
 		);
 	}
 }
+
+const CardArea = styled(CardActionArea)`
+	.MuiCardActionArea-focusHighlight {
+		background-color: transparent;
+	}
+`;
 
 const styles = (theme) => ({
 	root: {
