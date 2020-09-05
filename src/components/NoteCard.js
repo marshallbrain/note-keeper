@@ -7,6 +7,8 @@ import Typography from "@material-ui/core/Typography";
 import Modal from "@material-ui/core/Modal";
 import Paper from "@material-ui/core/Paper";
 
+const animationTime = 200
+
 class NoteCard extends Component {
 	
 	constructor(props) {
@@ -56,7 +58,7 @@ class NoteCard extends Component {
 				>
 					<CSSTransition
 						in={open}
-						timeout={2000}
+						timeout={animationTime}
 						appear
 						classNames={{
 							appearActive: classes.modalEnterActive,
@@ -88,27 +90,26 @@ const CardArea = styled(CardActionArea)`
 	}
 `;
 
+const fullViewStyle = {
+	top: "0 !important",
+	left: "0 !important",
+	width: "70vw !important",
+	height: "70vh !important",
+	marginLeft: "15vw",
+	marginTop: "15vh",
+}
+
 const styles = (theme) => ({
 	modal: {
 		position: "absolute",
 		outline: 0,
-		transition: "all 2s ease",
+		transition: `all ${animationTime}ms ease`,
 	},
 	modalEnterActive: {
-		top: "0 !important",
-		left: "0 !important",
-		width: "80vw !important",
-		height: "80vh !important",
-		marginLeft: "10vw",
-		marginTop: "10vh",
+		...fullViewStyle,
 	},
 	modalEnterDone: {
-		top: "0 !important",
-		left: "0 !important",
-		width: "80vw !important",
-		height: "80vh !important",
-		marginLeft: "10vw",
-		marginTop: "10vh",
+		...fullViewStyle,
 		transition: "all 0s ease",
 	},
 	modalExit: {
