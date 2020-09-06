@@ -3,6 +3,7 @@ import {withStyles} from "@material-ui/core";
 import { openDB } from 'idb';
 import NewCard from "./components/NewCard";
 import NoteCard from "./components/NoteCard";
+import NoteCardArea from "./components/NoteCardArea";
 
 class App extends Component {
 	
@@ -37,7 +38,8 @@ class App extends Component {
 				}
 			},
 		}).then(db => {
-			this.setState({db: db}, this.readNotes)
+			this.setState({db: db})
+			this.readNotes(db)
 		})
 		
 		this.state = {
@@ -46,22 +48,15 @@ class App extends Component {
 		
 	}
 	
-	readNotes = () => {
-		this.state.db.getAll('notes').then((notes) => {
-			notes.forEach(this.createCard)
+	readNotes = (db) => {
+		db.getAll('notes').then((cards) => {
+			this.setState({cards})
 		});
 	}
 	
 	saveCard = (title, text, options={}) => {
 		const entry = { title: title, text: text, ...options}
 		this.state.db.put('notes', entry).then();
-		this.createCard(entry)
-	}
-	
-	createCard = (newCard) => {
-		let cards = this.state.cards
-		cards.push(newCard)
-		this.setState({cards: cards})
 	}
 	
 	render() {
@@ -70,13 +65,7 @@ class App extends Component {
 		return (
 			<div>
 				<NewCard createCard={this.saveCard}/>
-				<div>
-					{this.state.cards.map(({title, text}) => (
-						<NoteCard title={title}>
-							{text}
-						</NoteCard>
-					))}
-				</div>
+				<NoteCardArea cards={this.state.cards}/>
 			</div>
 		);
 	}
