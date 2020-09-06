@@ -56,7 +56,11 @@ class App extends Component {
 	
 	saveCard = (title, text, options={}) => {
 		const entry = { title: title, text: text, ...options}
-		this.state.db.put('notes', entry).then();
+		this.state.db.put('notes', entry).then((card) => {
+			const cards = this.state.cards
+			cards.push(entry)
+			this.setState({cards})
+		});
 	}
 	
 	render() {
