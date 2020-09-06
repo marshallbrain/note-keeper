@@ -8,9 +8,7 @@ import Modal from "@material-ui/core/Modal";
 import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import Button from "@material-ui/core/Button";
 import CardActions from "@material-ui/core/CardActions";
-import CardHeader from "@material-ui/core/CardHeader";
 
 const animationTime = 200
 
@@ -44,22 +42,19 @@ class NoteCard extends Component {
 		
 		return (
 			<Card
-				className={classes.preCard}
+				className={classes.card}
 				ref={el => {element = el}}
 				style={{opacity: hide ? 0: 100}}
 			>
-				<div className={classes.fullContent} onClick={openFull}>
-					<CardHeader
-						className={classes.preTitle}
-						action={
-							<IconButton aria-label="settings">
-								<MoreVertIcon />
-							</IconButton>
-						}
-						title={this.props.title}
-					/>
-					<CardContent className={classes.preText}>
-						<Typography variant="body1">
+				<div className={classes.preCard}>
+					<CardContent className={classes.preContent} onClick={openFull}>
+						<IconButton className={classes.pinIcon}>
+							<MoreVertIcon/>
+						</IconButton>
+						<Typography variant="h5" className={classes.preTitle}>
+							{this.props.title}
+						</Typography>
+						<Typography variant="body1" className={classes.preText}>
 							{this.props.text}
 						</Typography>
 					</CardContent>
@@ -87,15 +82,15 @@ class NoteCard extends Component {
 					>
 						<Paper className={classes.fullCard} style={bounds}>
 							<div className={classes.fullContent}>
-								<CardHeader
-									className={classes.fullTitle}
-									action={
-										<IconButton aria-label="settings">
-											<MoreVertIcon />
-										</IconButton>
-									}
-									title={this.props.title}
-								/>
+								{/* TODO fix transitioning and formatting with no title */}
+								<CardContent className={classes.fullTitle}>
+									<IconButton className={classes.pinIcon}>
+										<MoreVertIcon/>
+									</IconButton>
+									<Typography variant="h5">
+										{this.props.title}
+									</Typography>
+								</CardContent>
 								<CardContent className={classes.fullText}>
 									<Typography variant="body1">
 										{this.props.text}
@@ -105,7 +100,6 @@ class NoteCard extends Component {
 									<IconButton>
 										<MoreVertIcon/>
 									</IconButton>
-									<Button>Save</Button>
 								</CardActions>
 							</div>
 						</Paper>
@@ -125,30 +119,39 @@ const CardArea = styled(CardActionArea)`
 const fullViewStyle = {
 	top: "0 !important",
 	left: "0 !important",
-	width: "70vw !important",
+	width: "50vw !important",
 	height: "70vh !important",
-	marginLeft: "15vw",
+	marginLeft: "25vw",
 	marginTop: "15vh",
 }
 
 const styles = (theme) => ({
+	pinIcon: {
+		marginTop: -8,
+		marginRight: -8,
+		float: "right",
+	},
+	card: {
+		marginBottom: 16,
+	},
+	
+	// Preview
 	preCard: {
 		width: 240,
-		height: 400,
-		marginBottom: 16,
-		whiteSpace: "pre-line",
-	},
-	preContent: {
-		height: "100%",
+		maxHeight: 400, //TODO Remove once text clipping is working
 		display: "flex",
 		flexDirection: "column",
 		whiteSpace: "pre-line",
 	},
+	preContent: {
+		flexGrow: "1",
+		overflow: "hidden",
+	},
 	preTitle: {
+		paddingBottom: 16,
 	},
 	preText: {
-		overflow: "hidden",
-		flexGrow: "1",
+		paddingTop: 16,
 	},
 	preAction: {
 	},
@@ -158,17 +161,19 @@ const styles = (theme) => ({
 		position: "absolute",
 		outline: 0,
 		transition: `all ${animationTime}ms ease`,
+		overflow: "inherit",
 	},
 	fullContent: {
 		height: "100%",
 		display: "flex",
 		flexDirection: "column",
 		whiteSpace: "pre-line",
+		overflow: "inherit",
 	},
 	fullTitle: {
 	},
 	fullText: {
-		overflow: "auto",
+		overflow: "inherit",
 		flexGrow: "1",
 	},
 	fullAction: {
@@ -182,6 +187,7 @@ const styles = (theme) => ({
 	},
 	modalEnterDone: {
 		...fullViewStyle,
+		overflow: "auto",
 		transition: "all 0s ease",
 	},
 	modalExit: {
