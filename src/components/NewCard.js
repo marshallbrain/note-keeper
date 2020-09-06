@@ -6,6 +6,7 @@ import IconButton from "@material-ui/core/IconButton";
 import PushPin from "./icons/PushPin";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Button from "@material-ui/core/Button";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
 class NewCard extends Component {
 	
@@ -20,24 +21,16 @@ class NewCard extends Component {
 		
 	}
 	
-	componentDidMount() {
-		document.addEventListener('mousedown', this.handleClickOutside);
-	}
-	
-	componentWillUnmount() {
-		document.removeEventListener('mousedown', this.handleClickOutside);
-	}
-	
-	handleClickOutside = (event) => {
-		if (this.element && this.element.contains(event.target)) {
-			this.setState({focused: true})
-		} else {
-			this.setState({focused: false})
-			if (this.state.title || this.state.text) {
-				this.props.createCard(this.state.title, this.state.text)
-				this.setState({title: "", text: ""})
-			}
+	removeFocuses = () => {
+		this.setState({focused: false})
+		if (this.state.title || this.state.text) {
+			this.props.createCard(this.state.title, this.state.text)
+			this.setState({title: "", text: ""})
 		}
+	}
+	
+	addFocuses = () => {
+		this.setState({focused: true})
 	}
 	
 	updateText = (event) => {
@@ -52,40 +45,44 @@ class NewCard extends Component {
 		
 		return (
 			<div>
-				<Paper
-					elevation={2}
-					className={classes.paper}
-					ref={el => {this.element = el}}
-				>
-					{focused && <div className={classes.row}>
-						<InputBase
-							id="title"
-							className={classes.title}
-							placeholder="Title"
-							disabled={!focused}
-							value={this.state.title}
-							onChange={this.updateText}
-						/>
-						<IconButton>
-							<PushPin/>
-						</IconButton>
-					</div>}
-					<div className={classes.row}>
-						<InputBase
-							id="text"
-							className={classes.text}
-							placeholder="Take a note"
-							value={this.state.text}
-							onChange={this.updateText}
-						/>
-					</div>
-					{focused && <div className={classes.row} style={{justifyContent: "space-between"}}>
-						<IconButton>
-							<MoreVertIcon/>
-						</IconButton>
-						<Button>Save</Button>
-					</div>}
-				</Paper>
+				<ClickAwayListener onClickAway={this.removeFocuses} >
+					<Paper
+						elevation={2}
+						className={classes.paper}
+						ref={el => {this.element = el}}
+					>
+						{focused && <div className={classes.row}>
+							<InputBase
+								id="title"
+								className={classes.title}
+								placeholder="Title"
+								disabled={!focused}
+								value={this.state.title}
+								onChange={this.updateText}
+							/>
+							<IconButton>
+								<PushPin/>
+							</IconButton>
+						</div>}
+						<div className={classes.row}>
+							<InputBase
+								id="text"
+								className={classes.text}
+								placeholder="Take a note"
+								value={this.state.text}
+								onChange={this.updateText}
+								onFocus={this.addFocuses}
+								multiline
+							/>
+						</div>
+						{focused && <div className={classes.row} style={{justifyContent: "space-between"}}>
+							<IconButton>
+								<MoreVertIcon/>
+							</IconButton>
+							<Button>Save</Button>
+						</div>}
+					</Paper>
+				</ClickAwayListener>
 			</div>
 		);
 	}
@@ -95,7 +92,7 @@ const styles = (theme) => ({
 	paper: {
 		display: "flex",
 		flexDirection: "column",
-		margin: "auto",
+		margin: "40px auto 80px auto",
 		width: "60%",
 		minWidth: 300,
 		maxWidth: 600,

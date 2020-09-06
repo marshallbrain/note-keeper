@@ -38,19 +38,21 @@ class NoteCard extends Component {
 		}
 		
 		return (
-			<div>
-				<Card ref={el => {element = el}} style={hide ? {opacity: 0}: {}}>
-					<CardArea onClick={openFull} disableRipple>
-						<CardContent>
-							<Typography variant="h5" gutterBottom>
-								{this.props.title}
-							</Typography>
-							<Typography variant="body1">
-								{this.props.children}
-							</Typography>
-						</CardContent>
-					</CardArea>
-				</Card>
+			<Card
+				className={classes.card}
+				ref={el => {element = el}}
+				style={{opacity: hide ? 0: 100}}
+			>
+				<CardContent
+					onClick={openFull}
+				>
+					<Typography variant="h5" gutterBottom>
+						{this.props.title}
+					</Typography>
+					<Typography variant="body1">
+						{this.props.text}
+					</Typography>
+				</CardContent>
 				<Modal
 					open={open}
 					onClose={closeFull}
@@ -67,19 +69,19 @@ class NoteCard extends Component {
 						}}
 						onExited={() => {this.setState({hide: false})}}
 					>
-						<Paper className={classes.modal} style={bounds}>
-							<div className={classes.modalContent}>
+						<Paper className={classes.paper} style={bounds}>
+							<CardContent>
 								<Typography variant="h5" gutterBottom>
 									{this.props.title}
 								</Typography>
-								<Typography variant="body1" component="p">
-									{this.props.children}
+								<Typography variant="body1">
+									{this.props.text}
 								</Typography>
-							</div>
+							</CardContent>
 						</Paper>
 					</CSSTransition>
 				</Modal>
-			</div>
+			</Card>
 		);
 	}
 }
@@ -94,13 +96,21 @@ const fullViewStyle = {
 	top: "0 !important",
 	left: "0 !important",
 	width: "70vw !important",
-	height: "70vh !important",
+	height: "40vh !important",
 	marginLeft: "15vw",
 	marginTop: "15vh",
 }
 
 const styles = (theme) => ({
-	modal: {
+	card: {
+		width: 240,
+		maxHeight: 300,
+		marginBottom: 16,
+		whiteSpace: "pre-line",
+	},
+	paper: {
+		whiteSpace: "pre-line",
+		overflow: "auto",
 		position: "absolute",
 		outline: 0,
 		transition: `all ${animationTime}ms ease`,
@@ -114,9 +124,6 @@ const styles = (theme) => ({
 	},
 	modalExit: {
 	},
-	modalContent: {
-		padding: theme.spacing(2),
-	}
 });
 
 export default withStyles(styles)(NoteCard);
