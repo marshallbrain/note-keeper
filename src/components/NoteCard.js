@@ -9,6 +9,7 @@ import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import CardActions from "@material-ui/core/CardActions";
+import Truncate from "./Truncate";
 
 const animationTime = 200
 
@@ -54,9 +55,11 @@ class NoteCard extends Component {
 						<Typography variant="h5" className={classes.preTitle}>
 							{this.props.title}
 						</Typography>
-						<Typography variant="body1" className={classes.preText}>
-							{this.props.text}
-						</Typography>
+							<Typography variant="body1" className={classes.preText}>
+								<Truncate maxLength={400} fudgeLine={20} fudgeWord={5}>
+									{this.props.text}
+								</Truncate>
+							</Typography>
 					</CardContent>
 					<CardActions className={classes.preAction}>
 						<IconButton>
@@ -138,7 +141,7 @@ const styles = (theme) => ({
 	// Preview
 	preCard: {
 		width: 240,
-		maxHeight: 400, //TODO Remove once text clipping is working
+		//maxHeight: 400, //TODO Remove once text clipping is working
 		display: "flex",
 		flexDirection: "column",
 		whiteSpace: "pre-line",
