@@ -31,7 +31,7 @@ class Masonry extends Component {
 	updateLayout = () => {
 		const colHeight = []
 		const newChildren = this.state.children.map(({child, style, ref}, index) => {
-			const col = index % this.state.colCount
+			const col = this.state.colCount ? index % this.state.colCount: 0
 			const height = (colHeight[col] || 0)
 			
 			const {height: refHeight} = ref.current.getBoundingClientRect()
