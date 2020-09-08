@@ -52,14 +52,14 @@ class NoteCard extends Component {
 						<IconButton className={classes.pinIcon}>
 							<MoreVertIcon/>
 						</IconButton>
-						<Typography variant="h5" className={classes.preTitle}>
+						{this.props.title && <Typography variant="h5" className={classes.preTitle}>
 							{this.props.title}
+						</Typography>}
+						<Typography variant="body1" className={classes.preText}>
+							<Truncate maxLength={400} fudgeLine={20} fudgeWord={5}>
+								{this.props.text}
+							</Truncate>
 						</Typography>
-							<Typography variant="body1" className={classes.preText}>
-								<Truncate maxLength={400} fudgeLine={20} fudgeWord={5}>
-									{this.props.text}
-								</Truncate>
-							</Typography>
 					</CardContent>
 					<CardActions className={classes.preAction}>
 						<IconButton>
@@ -151,10 +151,9 @@ const styles = (theme) => ({
 		overflow: "hidden",
 	},
 	preTitle: {
-		paddingBottom: 16,
+		paddingBottom: 32,
 	},
 	preText: {
-		paddingTop: 16,
 	},
 	preAction: {
 	},
