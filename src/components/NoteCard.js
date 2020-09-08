@@ -10,6 +10,8 @@ import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import CardActions from "@material-ui/core/CardActions";
 import Truncate from "./Truncate";
+import PushPin from "./icons/PushPin";
+import 'fontsource-roboto';
 
 const animationTime = 200
 
@@ -48,14 +50,16 @@ class NoteCard extends Component {
 				style={{opacity: hide ? 0: 100}}
 			>
 				<div className={classes.preCard}>
+					<IconButton className={classes.prePinIcon}>
+						<PushPin/>
+					</IconButton>
 					<CardContent className={classes.preContent} onClick={openFull}>
-						<IconButton className={classes.pinIcon}>
-							<MoreVertIcon/>
+						<IconButton className={classes.prePinHolder} disabled>
 						</IconButton>
-						{this.props.title && <Typography variant="h5" className={classes.preTitle}>
+						<Typography variant="h5" className={classes.preTitle} hidden={!this.props.title}>
 							{this.props.title}
-						</Typography>}
-						<Typography variant="body1" className={classes.preText}>
+						</Typography>
+						<Typography variant="body2" className={classes.preText}>
 							<Truncate maxLength={400} fudgeLine={20} fudgeWord={5}>
 								{this.props.text}
 							</Truncate>
@@ -86,18 +90,40 @@ class NoteCard extends Component {
 						<Paper className={classes.fullCard} style={bounds}>
 							<div className={classes.fullContent}>
 								{/* TODO fix transitioning and formatting with no title */}
-								<CardContent className={classes.fullTitle}>
-									<IconButton className={classes.pinIcon}>
-										<MoreVertIcon/>
+								<CardContent className={classes.fullTitleContent}>
+									<IconButton className={classes.fullPinHolder}>
+										<PushPin/>
 									</IconButton>
-									<Typography variant="h5">
-										{this.props.title}
-									</Typography>
+									<CSSTransition
+										in={open}
+										timeout={0}
+										appear
+										classNames={{
+											appear: classes.fullTitleInitial,
+											enterDone: classes.fullTitleActive,
+											exitDone: classes.fullTitleInitial,
+										}}
+									>
+										<Typography variant="h5" className={classes.fullTitle}>
+											{this.props.title}
+										</Typography>
+									</CSSTransition>
 								</CardContent>
-								<CardContent className={classes.fullText}>
-									<Typography variant="body1">
-										{this.props.text}
-									</Typography>
+								<CardContent className={classes.fullTextContent}>
+									<CSSTransition
+										in={open}
+										timeout={0}
+										appear
+										classNames={{
+											appear: classes.fullTextInitial,
+											enterDone: classes.fullTextActive,
+											exitDone: classes.fullTextInitial,
+										}}
+									>
+										<Typography variant="body1" className={classes.fullText}>
+											{this.props.text}
+										</Typography>
+									</CSSTransition>
 								</CardContent>
 								<CardActions className={classes.fullAction}>
 									<IconButton>
@@ -129,16 +155,22 @@ const fullViewStyle = {
 }
 
 const styles = (theme) => ({
-	pinIcon: {
-		marginTop: -8,
-		marginRight: -8,
-		float: "right",
-	},
 	card: {
 		marginBottom: 16,
 	},
 	
 	// Preview
+	prePinIcon: {
+		position: "absolute",
+		right: 0,
+	},
+	prePinHolder: {
+		marginRight: -16,
+		marginTop: -16,
+		paddingBottom: 36,
+		paddingLeft: 36,
+		float: "right",
+	},
 	preCard: {
 		width: 240,
 		//maxHeight: 400, //TODO Remove once text clipping is working
@@ -149,16 +181,23 @@ const styles = (theme) => ({
 	preContent: {
 		flexGrow: "1",
 		overflow: "hidden",
+		cursor: "default",
 	},
 	preTitle: {
-		paddingBottom: 32,
+		fontSize: "1rem",
 	},
 	preText: {
+		paddingTop: 4,
 	},
 	preAction: {
 	},
 	
 	//Full view
+	fullPinHolder: {
+		float: "right",
+		marginRight: -16,
+		marginTop: -16,
+	},
 	fullCard: {
 		position: "absolute",
 		outline: 0,
@@ -172,17 +211,37 @@ const styles = (theme) => ({
 		whiteSpace: "pre-line",
 		overflow: "inherit",
 	},
+	fullTitleContent: {
+		paddingBottom: 0,
+	},
 	fullTitle: {
 	},
-	fullText: {
+	fullTextContent: {
 		overflow: "inherit",
 		flexGrow: "1",
+		paddingTop: 4,
+	},
+	fullText: {
 	},
 	fullAction: {
 	},
 	
 	//Modal Transition
-	
+	fullTitleInitial: {
+		transition: `all ${animationTime}ms ease`,
+		paddingBottom: 0,
+		fontSize: "1rem",
+	},
+	fullTitleActive: {
+		transition: `all ${animationTime}ms ease`,
+	},
+	fullTextInitial: {
+		transition: `all ${animationTime}ms ease`,
+		fontSize: "0.875rem",
+	},
+	fullTextActive: {
+		transition: `all ${animationTime}ms ease`,
+	},
 	modalEnterActive: {
 		...fullViewStyle,
 		overflow: "hidden",
